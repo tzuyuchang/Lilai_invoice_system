@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
-from invoice_generator_fixed import InvoiceGenerator, load_language_schools
+from invoice_generator import InvoiceGenerator, load_language_schools
 import os
 from datetime import datetime
 
@@ -205,7 +205,7 @@ class InvoiceSystemApp:
                 output_file += '.pdf'
                 
             gen = InvoiceGenerator()
-            output_path = gen.generate(data, output_file)
+            output_path = gen.generate(data)
             
             messagebox.showinfo("Success", f"報價單已成功生成！\n(Saved as {output_path})")
             # 在Windows中開啟檔案

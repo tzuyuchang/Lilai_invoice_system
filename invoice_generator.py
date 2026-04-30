@@ -282,6 +282,11 @@ class InvoiceGenerator:
             date_str = datetime.now().strftime("%Y%m%d")
             self.output_path = f"invoice_output/invoice_{date_str}.pdf"
         
+        # Ensure the output directory exists
+        output_dir = os.path.dirname(self.output_path)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        
         c = canvas.Canvas(self.output_path, pagesize=A4)
         
         self.draw_top_header(c)
