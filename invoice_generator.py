@@ -285,7 +285,12 @@ class InvoiceGenerator:
         # Ensure the output directory exists
         output_dir = os.path.dirname(self.output_path)
         if output_dir and not os.path.exists(output_dir):
-            os.makedirs(output_dir)
+            try:
+                os.makedirs(output_dir)
+            except OSError:
+                # If we can't create the directory, fall back to current directory
+                print(f"Warning: Cannot create directory {output_dir}, saving to current directory")
+                self.output_path = os.path.basename(self.output_path)
         
         c = canvas.Canvas(self.output_path, pagesize=A4)
         
@@ -299,6 +304,10 @@ class InvoiceGenerator:
         return self.output_path
 
 if __name__ == "__main__":
+    # Ensure invoice_output directory exists
+    if not os.path.exists("invoice_output"):
+        os.makedirs("invoice_output")
+        
     sample_data = {
         "bill_to_name": "Erin School of English",
         "bill_to_address": "Archway House, Blessing Court, D07 PP30, Dublin",

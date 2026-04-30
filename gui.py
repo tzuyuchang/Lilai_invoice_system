@@ -6,6 +6,14 @@ from invoice_generator import InvoiceGenerator, load_language_schools
 import os
 from datetime import datetime
 
+# Ensure invoice_output directory exists
+if not os.path.exists("invoice_output"):
+    os.makedirs("invoice_output")
+
+# Ensure invoice_output directory exists
+if not os.path.exists("invoice_output"):
+    os.makedirs("invoice_output")
+
 class InvoiceSystemApp:
     def __init__(self, root):
         self.root = root
@@ -209,7 +217,7 @@ class InvoiceSystemApp:
             
             messagebox.showinfo("Success", f"報價單已成功生成！\n(Saved as {output_path})")
             # 在Windows中開啟檔案
-            os.startfile(output_path) 
+            os.startfile(output_path)
         except Exception as e:
             messagebox.showerror("Error", f"生成失敗 (Failed to generate):\n{str(e)}")
 
