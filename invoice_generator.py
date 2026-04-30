@@ -100,13 +100,13 @@ class InvoiceGenerator:
         # ==========================================
         logo_path = "ref/Lilaiireland_Logo_s.PNG"
         # 將logo放在更安全的位置，避免與其他元素重疊
-        logo_x = self.width - 200  
+        logo_x = self.width - 180  
         logo_y = self.height - 210 
         
         if os.path.exists(logo_path):
             # preserveAspectRatio=True 會保持你 Logo 的比例不變形
             # mask='auto' 會自動處理 PNG 圖片的透明背景
-            c.drawImage(logo_path, logo_x, logo_y, width=160, height=80, preserveAspectRatio=True, mask='auto')
+            c.drawImage(logo_path, logo_x, logo_y, width=200, height=80, preserveAspectRatio=True, mask='auto')
         else:
             c.setFont("Helvetica-Bold", 12)
             c.setFillColorRGB(1, 0, 0)
@@ -126,14 +126,14 @@ class InvoiceGenerator:
         
         # Left side - 客戶資訊
         c.drawString(50, banner_y + 70, "Bill to:")
-        c.drawString(50, banner_y + 40, data.get("bill_to_name", "Erin School of English"))
-        c.drawString(50, banner_y + 25, data.get("bill_to_address", "Archway House, Blessing Court, D07 PP30, Dublin"))
-        c.drawString(50, banner_y + 10, "Phone/WhatsApp: " + data.get("bill_to_phone", "+353870312026"))
+        c.drawString(50, banner_y + 50, data.get("bill_to_name", "Erin School of English"))
+        c.drawString(50, banner_y + 35, data.get("bill_to_address", "Archway House, Blessing Court, D07 PP30, Dublin"))
+        c.drawString(50, banner_y + 20, "Phone/WhatsApp: " + data.get("bill_to_phone", "+353870312026"))
 
         # Right side - 發票資訊
         c.drawString(400, banner_y + 70, "Invoice details:")
         # 使用當前日期作為預設值
-        c.drawString(400, banner_y + 40, "Date: " + data.get("invoice_date", datetime.now().strftime("%d/%m/%Y")))
+        c.drawString(400, banner_y + 50, "Date: " + data.get("invoice_date", datetime.now().strftime("%d/%m/%Y")))
 
     def draw_table(self, c, data):
         items = data.get("items", [])
@@ -200,7 +200,7 @@ class InvoiceGenerator:
         c.line(300, current_y - 10, self.width - 50, current_y - 10)
 
     def draw_payment_info(self, c):
-        start_y = self.height - 580
+        start_y = self.height - 500
         c.setFillColorRGB(0, 0, 0)
         c.setFont("Times-Roman", 11)
         
@@ -246,10 +246,10 @@ class InvoiceGenerator:
     def draw_footer(self, c):
         # 簽名區域放在銀行資訊後面，避免遮擋
         # 調整位置，確保與銀行資訊有足夠空間
-        start_y = self.height - 800  # 向下移動更多空間
+        start_y = self.height - 780  # 向下移動更多空間
         
         # 簽名區域
-        sign_x = 50
+        sign_x = 400
         sign_y = start_y
         
         sign_path = "ref/TzuYuChang_sign.png"
@@ -264,14 +264,14 @@ class InvoiceGenerator:
             c.setFillColorRGB(0, 0, 0)
         
         # 繪製簽名的底線
-        c.setLineWidth(2)
+        c.setLineWidth(1.5)
         c.setStrokeColorRGB(0.2, 0.2, 0.2)
         c.line(sign_x, sign_y + 2, sign_x + 90, sign_y + 2)
         
         # 繪製底線下方的文字
         c.setFont("Times-Roman", 10)
-        c.drawString(sign_x, sign_y - 6, "Signature")
-        c.drawString(sign_x, sign_y - 18, "DREAM EIRE INTERNATIONAL")
+        c.drawString(sign_x, sign_y - 10, "Signature")
+        c.drawString(sign_x, sign_y - 20, "DREAM EIRE INTERNATIONAL")
 
     def generate(self, data, custom_filename=None):
         # 如果提供了自訂檔名，則使用它；否則使用預設格式
