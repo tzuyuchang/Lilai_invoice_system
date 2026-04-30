@@ -210,15 +210,25 @@ class InvoiceSystemApp:
             gen = InvoiceGenerator()
             output_path = gen.generate(data)
             
-            # Verify file exists before trying to open
+            # Verify file exists
             if os.path.exists(output_path):
                 messagebox.showinfo("Success", f"報價單已成功生成！\n(Saved as {output_path})")
-                # 在Windows中開啟檔案
+                # Try to open the file with better error handling
                 try:
-                    os.startfile(output_path)
+                    # Use absolute path for better compatibility
+                    abs_path = os.path.abspath(output_path)
+                    print(f"Attempting to open: {abs_path}")
+                    os.startfile(abs_path)
                 except Exception as e:
-                    print(f"Warning: Could not open file automatically: {e}")
-                    messagebox.showinfo("Info", f"文件已生成但無法自動開啟。\n路徑: {output_path}")
+                    print(f"Failed to open file automatically: {e}")
+                    # Fallback: open the directory containing the file
+                    try:
+                        dir_path = os.path.dirname(abs_path)
+                        os.startfile(dir_path)
+                        messagebox.showinfo("Info", f"文件已生成成功。\n請在文件夾中查看: {dir_path}")
+                    except Exception as e2:
+                        print(f"Failed to open directory: {e2}")
+                        messagebox.showinfo("Info", f"文件已生成成功。\n路徑: {output_path}\n\n請手動開啟此文件查看。")
             else:
                 messagebox.showerror("Error", f"文件生成失敗！\n路徑: {output_path}")
                 

@@ -305,13 +305,6 @@ class InvoiceGenerator:
         self.draw_footer(c)
         
         c.save()
-        
-        # Verify file was created
-        if os.path.exists(self.output_path):
-            print(f"Successfully created: {self.output_path}")
-        else:
-            print(f"ERROR: Failed to create file: {self.output_path}")
-            
         return self.output_path
 
 if __name__ == "__main__":
