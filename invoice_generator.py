@@ -292,6 +292,10 @@ class InvoiceGenerator:
                 print(f"Warning: Cannot create directory {output_dir}, saving to current directory")
                 self.output_path = os.path.basename(self.output_path)
         
+        # Debug: Print the absolute path
+        abs_path = os.path.abspath(self.output_path)
+        print(f"Attempting to save to: {abs_path}")
+        
         c = canvas.Canvas(self.output_path, pagesize=A4)
         
         self.draw_top_header(c)
@@ -301,6 +305,13 @@ class InvoiceGenerator:
         self.draw_footer(c)
         
         c.save()
+        
+        # Verify file was created
+        if os.path.exists(self.output_path):
+            print(f"Successfully created: {self.output_path}")
+        else:
+            print(f"ERROR: Failed to create file: {self.output_path}")
+            
         return self.output_path
 
 if __name__ == "__main__":

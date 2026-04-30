@@ -207,17 +207,21 @@ class InvoiceSystemApp:
                 "total": total
             }
             
-            output_file = self.filename_var.get()
-            # 確保檔名以.pdf結尾
-            if not output_file.endswith('.pdf'):
-                output_file += '.pdf'
-                
             gen = InvoiceGenerator()
             output_path = gen.generate(data)
             
-            messagebox.showinfo("Success", f"報價單已成功生成！\n(Saved as {output_path})")
-            # 在Windows中開啟檔案
-            os.startfile(output_path)
+            # Verify file exists before trying to open
+            if os.path.exists(output_path):
+                messagebox.showinfo("Success", f"報價單已成功生成！\n(Saved as {output_path})")
+                # 在Windows中開啟檔案
+                try:
+                    os.startfile(output_path)
+                except Exception as e:
+                    print(f"Warning: Could not open file automatically: {e}")
+                    messagebox.showinfo("Info", f"文件已生成但無法自動開啟。\n路徑: {output_path}")
+            else:
+                messagebox.showerror("Error", f"文件生成失敗！\n路徑: {output_path}")
+                
         except Exception as e:
             messagebox.showerror("Error", f"生成失敗 (Failed to generate):\n{str(e)}")
 
