@@ -199,22 +199,29 @@ class InvoiceGenerator:
         c.drawRightString(self.width - 50, current_y, f"EUR{total:.2f}")
         c.line(300, current_y - 10, self.width - 50, current_y - 10)
 
-    def draw_payment_info(self, c):
-        start_y = self.height - 500
-        c.setFillColorRGB(0, 0, 0)
-        c.setFont("Times-Roman", 11)
+    def draw_payment_info(self, c, data):
+        # 1. 移除自適應邏輯，改為固定的起始位置，並將數值加大讓他往下移 (原本是 self.height - 500)
+        start_y = self.height - 620
         
+        c.setFillColorRGB(0, 0, 0)
+        
+        # 2. 將字體從 11 改為 10
+        c.setFont("Times-Roman", 10)
         c.drawString(50, start_y, "PAY TO:")
-        c.setFont("Times-Bold", 11)
-        c.drawString(50, start_y - 20, "DREAM EIRE INTERNATIONAL")
+        
+        c.setFont("Times-Bold", 10)
+        c.drawString(50, start_y - 18, "DREAM EIRE INTERNATIONAL") # 微調間距
         
         # Underlined text
-        c.setFont("Times-Roman", 11)
-        c.drawString(50, start_y - 45, "Bank information:")
-        c.line(50, start_y - 47, 130, start_y - 47)
+        c.setFont("Times-Roman", 10)
+        c.drawString(50, start_y - 40, "Bank information:")
+        c.line(50, start_y - 42, 125, start_y - 42) # 底線稍微縮短配合小字體
         
-        y = start_y - 65
-        line_height = 16
+        y = start_y - 58
+        line_height = 14  # 3. 縮小行距 (原本是 16)
+        
+        # 4. 銀行詳細資訊的字體縮小為 9
+        c.setFont("Times-Roman", 9)
         
         c.drawString(50, y, "Bank: TAIWAN COOPERATIVE BANK LTD")
         y -= line_height
@@ -227,16 +234,16 @@ class InvoiceGenerator:
         
         # Bank account (bold part)
         c.drawString(50, y, "Bank account: ")
-        c.setFont("Times-Bold", 11)
-        c.drawString(125, y, "0590188029436")
-        c.setFont("Times-Roman", 11)
+        c.setFont("Times-Bold", 9)
+        c.drawString(110, y, "0590188029436") # 微調X座標以貼齊變小的字 (原本 125)
+        c.setFont("Times-Roman", 9)
         y -= line_height
         
         # Account name (bold part)
         c.drawString(50, y, "Account name: ")
-        c.setFont("Times-Bold", 11)
-        c.drawString(125, y, "DREAM EIRE INTERNATIONAL")
-        c.setFont("Times-Roman", 11)
+        c.setFont("Times-Bold", 9)
+        c.drawString(110, y, "DREAM EIRE INTERNATIONAL") # 同上
+        c.setFont("Times-Roman", 9)
         y -= line_height
         
         c.drawString(50, y, "Swift code: TACBTWTP059")
@@ -301,7 +308,7 @@ class InvoiceGenerator:
         self.draw_top_header(c)
         self.draw_middle_banner(c, data)
         self.draw_table(c, data)
-        self.draw_payment_info(c)
+        self.draw_payment_info(c, data)
         self.draw_footer(c)
         
         c.save()
